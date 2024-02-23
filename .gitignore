@@ -1,0 +1,56 @@
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/next/.env
+/next/.gitignore
+/next/.gitattributes
+/next/.editorconfig
+# dependencies
+/next/node_modules
+/next/.pnp
+/next.pnp.js
+
+# testing
+/next/coverage
+
+# next.js
+/next/.next/
+/next/out/
+
+# production
+/next/build
+
+# misc
+/next/.DS_Store
+/next/*.pem
+
+# debug
+/next/npm-debug.log*
+/next/yarn-debug.log*
+/next/yarn-error.log*
+
+# env files
+/next/.env.local
+/next/.env.development.local
+/next/.env.test.local
+/next/.env.production.local
+
+# vercel
+/next/.vercel
+
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode

@@ -80,7 +80,7 @@ export function LatestInvoicesSkeleton() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default function DashboardSkeleton() {

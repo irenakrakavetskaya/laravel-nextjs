@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\Invoice;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $limit = $request->get('limit');
+        $status = $request->get('status');
+        $invoices = Invoice::with('customer')->latest('created_at');
+        if ($status) {
+            $invoices->where('status', strtoupper($status));
+        }
+        if ($limit) {
+            $invoices->take($limit);
+        }
+        $invoices = $invoices->get();
+
+        return response()->json($invoices);
     }
 
     /**

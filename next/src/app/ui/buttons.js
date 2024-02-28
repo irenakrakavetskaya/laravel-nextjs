@@ -1,0 +1,45 @@
+'use client'
+
+import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
+import process from 'next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss'
+//import { deleteInvoice } from '@/lib'
+import { deleteInvoice } from '@/lib'
+import Button from '@/components/Button'
+
+export function CreateInvoice() {
+    let createLink = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices/store'
+
+    return (
+        <Link
+            href={createLink}
+            className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+            <span className="hidden md:block">Create Invoice</span>{' '}
+            <PlusIcon className="h-5 md:ml-4" />
+        </Link>
+    )
+}
+
+export function UpdateInvoice({ id }) {
+    let updateLink = `/dashboard/invoices/${id}/edit`
+
+    return (
+        <Link
+            href={updateLink}
+            className="rounded-md border p-2 hover:bg-gray-100">
+            <PencilIcon className="w-5" />
+        </Link>
+    )
+}
+
+export function DeleteInvoice({ id }) {
+    return (
+        <Button
+            className="ml-4 bg-red-600 hover:bg-red-500"
+            onClick={async () => {
+                await deleteInvoice(id)
+            }}>
+            Delete
+        </Button>
+    )
+}

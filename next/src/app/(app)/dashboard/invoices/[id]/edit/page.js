@@ -1,8 +1,7 @@
 import Form from '@/app/ui/edit-form';
-//import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/lib';
 import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
 
 export const metadata = {
     title: 'Invoice edit',
@@ -24,7 +23,7 @@ export default async function Page({ params }) {
 
     return (
         <main>
-            {/*<Breadcrumbs
+            <Breadcrumbs
                 breadcrumbs={[
                     { label: 'Invoices', href: '/dashboard/invoices' },
                     {
@@ -33,7 +32,7 @@ export default async function Page({ params }) {
                         active: true,
                     },
                 ]}
-            />*/}
+            />
             <Form invoice={invoice} customers={customers} />
         </main>
     );

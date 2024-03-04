@@ -2,13 +2,11 @@
 
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import process from 'next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss'
-//import { deleteInvoice } from '@/lib'
 import { deleteInvoice } from '@/lib'
 import Button from '@/components/Button'
 
 export function CreateInvoice() {
-    let createLink = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices/store'
+    let createLink = `/dashboard/invoices/create`
 
     return (
         <Link
@@ -20,8 +18,8 @@ export function CreateInvoice() {
     )
 }
 
-export function UpdateInvoice({ id }) {
-    let updateLink = `/dashboard/invoices/${id}/edit`
+export function UpdateInvoice({ id, page }) {
+    let updateLink = `/dashboard/invoices/${id}/edit?page=${page}`
 
     return (
         <Link

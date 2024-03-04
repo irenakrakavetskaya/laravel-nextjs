@@ -4,7 +4,8 @@ import { formatDateToLocal, formatCurrency } from '@/lib/utils'
 import { fetchFilteredInvoices } from '@/lib'
 
 export default async function InvoicesTable({ query, currentPage }) {
-    const invoices = await fetchFilteredInvoices(query, currentPage)
+    const [invoices] = await fetchFilteredInvoices(query, currentPage, true);
+
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
@@ -17,7 +18,7 @@ export default async function InvoicesTable({ query, currentPage }) {
                                 <div className="flex items-center justify-between border-b pb-4">
                                     <div>
                                         <p className="text-sm text-gray-500">
-                                            {invoice.customer.email}
+                                            {invoice.customer?.email}
                                         </p>
                                     </div>
                                     <InvoiceStatus status={invoice.status} />
@@ -34,7 +35,10 @@ export default async function InvoicesTable({ query, currentPage }) {
                                         </p>
                                     </div>
                                     <div className="flex justify-end gap-2">
-                                        <UpdateInvoice id={invoice.id} />
+                                        <UpdateInvoice
+                                            id={invoice.id}
+                                            page={currentPage}
+                                        />
                                         <DeleteInvoice id={invoice.id} />
                                     </div>
                                 </div>
@@ -83,11 +87,11 @@ export default async function InvoicesTable({ query, currentPage }) {
                                     className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
                                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                                         <div className="flex items-center gap-3">
-                                            <p>{invoice.customer.name}</p>
+                                            <p>{invoice.customer?.name}</p>
                                         </div>
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
-                                        {invoice.customer.email}
+                                        {invoice.customer?.email}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         {formatCurrency(invoice.amount)}
@@ -102,7 +106,10 @@ export default async function InvoicesTable({ query, currentPage }) {
                                     </td>
                                     <td className="whitespace-nowrap py-3 pl-6 pr-3">
                                         <div className="flex justify-end gap-3">
-                                            <UpdateInvoice id={invoice.id} />
+                                            <UpdateInvoice
+                                                id={invoice.id}
+                                                page={currentPage}
+                                            />
                                             <DeleteInvoice id={invoice.id} />
                                         </div>
                                     </td>

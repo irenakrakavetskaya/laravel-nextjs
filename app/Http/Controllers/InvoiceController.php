@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreInvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class InvoiceController extends Controller
 {
@@ -16,17 +14,41 @@ class InvoiceController extends Controller
     public function index(Request $request): JsonResponse
     {
         $limit = $request->get('limit');
+        $offset = $request->get('offset');
         $status = $request->get('status');
+        $input = $request->get('query');
         $invoices = Invoice::with('customer')->latest('created_at');
+
         if ($status) {
             $invoices->where('status', strtoupper($status));
+        }
+        if ($input) {
+            if (is_numeric($input)) {
+                $input *= 100;
+            }
+            $invoices
+           ->whereHas('customer', function ($query) use ($input) {
+                $query->where('name', 'like', "%{$input}%")
+                ->orWhere('email', 'LIKE', "%{$input}%");;
+            })
+            ->orwhere('amount', 'LIKE', "%{$input}%")
+            ->orWhere('status', 'LIKE', "{$input}");
+        }
+
+        if ($offset) {
+            $invoices->offset($offset);
         }
         if ($limit) {
             $invoices->take($limit);
         }
-        $invoices = $invoices->get();
 
-        return response()->json($invoices);
+        $invoices = $invoices->get();
+        $invoicesCount = $invoices->count();
+
+        return response()->json([
+            'invoices' => $invoices,
+            'count' => $invoicesCount,
+        ]);
     }
 
     /**
@@ -40,9 +62,17 @@ class InvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInvoiceRequest $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required',
+            'status' => 'required',
+            'customer_id' => 'required',
+        ]);
+
+        $invoice = Invoice::create($validated);
+
+        return response()->json(['status' => 'Invoice created.']);
     }
 
     /**
@@ -68,24 +98,17 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, Invoice $invoice): JsonResponse
     {
-        //$item = Item::find($id);
-        /*$invoice->amount = $request->input('amount');
-        $invoice->status = $request->input('status');
-        $invoice->customerId = $request->input('customerId');
-        $invoice->save();*/
+        $validated = $request->validate([
+            'amount' => 'required',
+            'status' => 'required',
+            'customer_id' => 'required',
+        ]);
 
-        $invoice = Invoice::findOrFail($request->id);
+        $invoice->update($validated);
 
-        if ($invoice->updateOrFail($request->all()) === false) {
-            return response(
-                "Couldn't update the invoice with id {$request->id}",
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        return response($invoice);
+        return response()->json(['status' => 'Invoice updated.']);
     }
 
     /**

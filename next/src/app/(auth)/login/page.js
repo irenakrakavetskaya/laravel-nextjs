@@ -26,7 +26,7 @@ const Login = () => {
 
     useEffect(() => {
         if (router.reset?.length > 0 && errors.length === 0) {
-            setStatus(atob(router.reset))
+            setStatus(atob(router.reset)) //atob() - decodes a string of data which has been encoded using Base64
         } else {
             setStatus(null)
         }

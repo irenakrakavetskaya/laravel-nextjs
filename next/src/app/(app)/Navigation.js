@@ -42,7 +42,9 @@ const Navigation = ({ user }) => {
                             </NavLink>
                             <NavLink
                                 href="/dashboard/invoices"
-                                active={usePathname() === '/dashboard/invoices'}>
+                                active={
+                                    usePathname() === '/dashboard/invoices'
+                                }>
                                 Invoices
                             </NavLink>
                         </div>

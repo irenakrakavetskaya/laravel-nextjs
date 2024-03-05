@@ -1,11 +1,20 @@
 import useSWR from 'swr'
-import axios from '@/lib/axios'
+import Axios from 'axios'
 import { useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const params = useParams()
+
+    const axios = Axios.create({
+        baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        withCredentials: true,
+        withXSRFToken: true,
+    })
 
     const { data: user, error, mutate } = useSWR('/api/user', () =>
         axios
@@ -14,7 +23,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 409) throw error
 
-                router.push('/verify-email')
+                router.push('/verify-email') //Perform a client-side navigation to the provided route
             }),
     )
 

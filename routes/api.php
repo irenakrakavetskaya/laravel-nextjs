@@ -6,7 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RevenueController;
-
+use App\Http\Controllers\Auth\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +22,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('posts', PostController::class);
-Route::resource('customers', CustomerController::class);
-Route::resource('invoices', InvoiceController::class);
-Route::resource('revenues', RevenueController::class);
+Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/login', [AuthController::class, 'loginUser']);
+
+Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum'])
+    ->group(function() {
+        Route::resource('customers', CustomerController::class);
+        Route::resource('invoices', InvoiceController::class);
+        Route::resource('revenues', RevenueController::class);
+});

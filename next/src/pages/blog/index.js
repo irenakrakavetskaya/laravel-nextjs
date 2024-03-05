@@ -1,17 +1,21 @@
-"use client"
+'use client'
 
-import AppLayout from '@/app/(app)/layout'
 import Head from 'next/head'
 import Link from 'next/link'
 import Button from '@/components/Button'
-import axios from '@/lib/axios'
+import { axios, token } from '@/lib/axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 import '@/app/global.css'
 
 export async function getServerSideProps() {
-    const res = await fetch(`http://localhost:8000/api/posts`)
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/posts`;
+    const res = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        cache: 'no-store',
+    });
     const data = await res.json()
     return { props: { data } }
 }
@@ -41,7 +45,7 @@ export default function Index({ data }) {
         })
     }
 
-    const edit = (id) => {axios.get(`/api/posts/${id}/edit`)
+    const edit = (id) => {axios.get(`/api/posts/${id}`)
         .then(res => {
             router.push({
                 pathname:`/blog/edit`,
@@ -68,7 +72,7 @@ export default function Index({ data }) {
                     </thead>
                     <tbody>
                     {data.map(post => (
-                        <tr key="post.id">
+                        <tr key={post.id}>
                             <td className="px-4 py-1 border">{post.title}</td>
                             <td className="px-4 py-1 border">{post.content}</td>
                             <td className="px-4 py-1 border">

@@ -6,22 +6,33 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
 
+const ITEMS_PER_PAGE = 6
+const token = process.env.NEXT_PUBLIC_TOKEN;
+
 export async function fetchRevenue() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/revenues'
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    let result = await res.json()
+    const res = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
 
-    return result
+    return await res.json();
 }
 
 export async function fetchLatestInvoices() {
-    let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices?limit=5'
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    let data = await res.json()
-    const latestInvoices = data.map(invoice => ({
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices?limit=5';
+    const res = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    let data = await res.json();
+    let invoices = data['invoices'];
+    const latestInvoices = invoices.map(invoice => ({
         ...invoice,
         amount: formatCurrency(invoice.amount),
-    }))
+    }));
 
     return latestInvoices
 }
@@ -37,17 +48,21 @@ export async function fetchCardData() {
 
     let result = await Promise.all(
         urls.map(url =>
-            fetch(url)
+            fetch(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(res => res.json())
                 .then(data => ({ data }))
                 .catch(error => ({ error, url })),
         ),
     )
 
-    const numberOfInvoices = result[0].data.length
+    const numberOfInvoices = result[0].data['count'];
     const numberOfCustomers = result[1].data.length
-    const totalPaidInvoices = result[2].data.length
-    const totalPendingInvoices = result[3].data.length
+    const totalPaidInvoices = result[2].data['invoices'].length
+    const totalPendingInvoices = result[3].data['invoices'].length
 
     return {
         numberOfInvoices,
@@ -62,6 +77,9 @@ export async function deleteInvoice(id) {
         let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`
         const res = await fetch(url, {
             method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
         await res.json()
     } catch (e) {
@@ -70,8 +88,6 @@ export async function deleteInvoice(id) {
 
     revalidatePath('/dashboard/invoices')
 }
-
-const ITEMS_PER_PAGE = 6
 
 export async function fetchFilteredInvoices(query, currentPage, limit) {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices`
@@ -84,7 +100,11 @@ export async function fetchFilteredInvoices(query, currentPage, limit) {
     } else if (query && limit) {
         url += `&query=${query}`;
     }
-    const res = await fetch(url, { cache: 'no-store' }) //3600
+    const res = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     let data = await res.json()
     let invoices = data['invoices'];
     let count = data['count'];
@@ -128,12 +148,12 @@ export async function updateInvoice(id, page, prevState, formData) {
     amount = Number(amount)
     const amountInCents = amount * 100
 
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`;
     try {
-        let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
-                // Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
                 'Content-type': 'application/json',
             },
             body: JSON.stringify({
@@ -177,7 +197,11 @@ export async function updateInvoice(id, page, prevState, formData) {
 export async function fetchInvoiceById(id) {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`
     try {
-        const res = await fetch(url, { cache: 'no-store' })
+        const res = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         let data = await res.json()
         data.amount = data.amount / 100
 
@@ -190,7 +214,11 @@ export async function fetchInvoiceById(id) {
 export async function fetchCustomers() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/customers'
     try {
-        const res = await fetch(url, { cache: 'no-store' })
+        const res = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return await res.json()
     } catch (err) {
         throw new Error('Failed to fetch all customers.')
@@ -220,12 +248,12 @@ export async function createInvoice(prevState, formData) {
     const { customerId, amount, status } = validatedFields.data;
     const amountInCents = amount * 100;
 
-    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/`
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/`;
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                // Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
                 'Content-type': 'application/json',
             },
             body: JSON.stringify({

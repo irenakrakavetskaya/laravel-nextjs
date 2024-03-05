@@ -44,9 +44,11 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post): JsonResponse
     {
-        //
+        $record = Post::find($post->id)->toArray();
+
+        return response()->json($record);
     }
 
     /**

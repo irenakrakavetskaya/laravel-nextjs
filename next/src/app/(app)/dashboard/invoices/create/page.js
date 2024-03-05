@@ -5,6 +5,7 @@ import { fetchCustomers } from '@/lib';
 export const metadata = {
     title: 'Invoice create',
 };
+
 export default async function Page() {
     //fetches customers and passes it to the <Form> component
     const customers = await fetchCustomers();

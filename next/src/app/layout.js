@@ -1,7 +1,9 @@
 import '@/app/global.css'
 
 export const metadata = {
-    title: 'Introduction',
+    title: {
+        default: 'Next-Laravel App',
+    },
 }
 const RootLayout = ({ children }) => {
     return (

@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchCardData } from '@/lib';
+import Link from 'next/link'
 
 const iconMap = {
     collected: BanknotesIcon,
@@ -40,6 +41,11 @@ export default async function CardWrapper() {
                 value={numberOfCustomers}
                 type="customers"
             />
+            {/*When the user clicks the <Link>, the modal will open instead of navigating to the /customers page.
+            However, on refresh or initial load, navigating to /customers will take the user to the customers page.*/}
+            <div className="rounded-xl bg-gray-50 p-2 shadow-smcard">
+                <Link href="/customers">Open modal with customers</Link>
+            </div>
         </>
     )
 }

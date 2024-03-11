@@ -3,6 +3,7 @@ import '@/app/global.css'
 export const metadata = {
     title: {
         default: 'Next-Laravel App',
+        description: 'Example of App of Laravel integrated with Next',
     },
 }
 const RootLayout = ({ children }) => {

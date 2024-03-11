@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Button from '@/components/Button'
+import Button from '@/pages/ui/Button'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Label from '@/components/Label'

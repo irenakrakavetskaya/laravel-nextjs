@@ -1,8 +1,8 @@
-import Pagination from '@/components/Pagination';
-import Search from '@/components/Search';
-import Table from '@/components/Table';
+import Pagination from '@/app/ui/pagination';
+import Search from '@/app/ui/search';
+import Table from '@/app/ui/table';
 import { CreateInvoice } from '@/app/ui/buttons';
-import Header from '@/app/(app)/Header'
+import Header from '@/app/ui/Header'
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons'
 import { Suspense } from 'react';
 import { fetchFilteredInvoices } from '@/lib'

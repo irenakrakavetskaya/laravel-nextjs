@@ -3,10 +3,10 @@
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { deleteInvoice } from '@/lib'
-import Button from '@/components/Button'
+import Button from '@/pages/ui/Button'
 
 export function CreateInvoice() {
-    let createLink = `/dashboard/invoices/create`
+    let createLink = `/invoices/create`
 
     return (
         <Link
@@ -19,7 +19,7 @@ export function CreateInvoice() {
 }
 
 export function UpdateInvoice({ id, page }) {
-    let updateLink = `/dashboard/invoices/${id}/edit?page=${page}`
+    let updateLink = `/invoices/${id}/edit?page=${page}`
 
     return (
         <Link

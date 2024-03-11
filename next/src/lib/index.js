@@ -20,6 +20,7 @@ export async function fetchRevenue() {
     return await res.json();
 }
 
+/*
 export async function fetchLatestInvoices() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices?limit=5';
     const res = await fetch(url, {
@@ -36,6 +37,7 @@ export async function fetchLatestInvoices() {
 
     return latestInvoices
 }
+*/
 
 export async function fetchCardData() {
     let invoicesUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices'
@@ -86,7 +88,7 @@ export async function deleteInvoice(id) {
         throw new Error('Failed to delete invoice')
     }
 
-    revalidatePath('/dashboard/invoices')
+    revalidatePath('/invoices')
 }
 
 export async function fetchFilteredInvoices(query, currentPage, limit) {
@@ -188,10 +190,10 @@ export async function updateInvoice(id, page, prevState, formData) {
     }
 
     //clear the client cache and make a new server request.
-    revalidatePath('/dashboard/invoices')
+    revalidatePath('/invoices')
 
     //redirect the user to the invoice's page.
-    redirect(`/dashboard/invoices?page=${page}`)
+    redirect(`/invoices?page=${page}`)
 }
 
 export async function fetchInvoiceById(id) {
@@ -280,7 +282,7 @@ export async function createInvoice(prevState, formData) {
     }
 
     // clear cache and trigger a new request to the server.
-    revalidatePath('/dashboard/invoices');
+    revalidatePath('/invoices');
 
-    redirect('/dashboard/invoices');
+    redirect('/invoices');
 }

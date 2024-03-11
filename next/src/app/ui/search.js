@@ -24,10 +24,10 @@ export default function Search({ placeholder }) {
             params.delete('query');
         }
 
-        //${pathname} is the current path, for ex, "/dashboard/invoices".
+        //${pathname} is the current path, for ex, "/invoices".
         //params.toString() translates this input into a URL-friendly format.
         //the below string updates the URL with the user's search data.
-        //For example, /dashboard/invoices?query=lee if the user searches for "Lee".
+        //For example, /invoices?query=lee if the user searches for "Lee".
         replace(`${pathname}?${params.toString()}`);
     }, 300);
 

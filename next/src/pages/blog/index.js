@@ -2,7 +2,7 @@
 
 import Head from 'next/head'
 import Link from 'next/link'
-import Button from '@/components/Button'
+import Button from '@/pages/ui/Button'
 import { axios, token } from '@/lib/axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'

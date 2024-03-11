@@ -1,7 +1,7 @@
-import Header from '@/app/(app)/Header'
-import RevenueChart from '@/components/RevenueChart';
-import LatestInvoices from '@/components/LatestInvoices';
-import CardWrapper from '@/components/Cards';
+import Header from '@/app/ui/Header'
+import RevenueChart from '@/app/ui/revenueChart';
+import LatestInvoices from '@/app/ui/latestInvoices';
+import CardWrapper from '@/app/ui/cards';
 import { Suspense } from 'react';
 import {
     RevenueChartSkeleton,

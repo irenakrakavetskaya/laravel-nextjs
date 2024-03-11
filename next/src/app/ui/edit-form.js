@@ -15,7 +15,7 @@ import { useSearchParams } from 'next/navigation'
 export default function EditInvoiceForm({ invoice, customers }) {
     const searchParams = useSearchParams()
     const page = searchParams.get('page')
-    const cancelHref = `/dashboard/invoices?page=${page}`
+    const cancelHref = `/invoices?page=${page}`
 
     const initialState = { message: null, errors: {} }
     const updateInvoiceWithId = updateInvoice.bind(null, invoice.id, page)

@@ -1,7 +1,8 @@
 'use client'
 
 import { useAuth } from '@/hooks/auth'
-import Navigation from '@/app/(app)/Navigation'
+//import Navigation from '@/app/(app)/Navigation'
+import Navigation from '../../components/Navigation'
 import Loading from '@/app/(app)/Loading'
 import Template from '@/app/(app)/template'
 

@@ -2,6 +2,7 @@ import { UpdateInvoice, DeleteInvoice } from '@/app/ui/buttons'
 import InvoiceStatus from '@/app/ui/status'
 import { formatDateToLocal, formatCurrency } from '@/lib/utils'
 import { fetchFilteredInvoices } from '@/lib'
+import SortProducts from '@/app/ui/sorting';
 
 export default async function InvoicesTable({ query, currentPage }) {
     const [invoices] = await fetchFilteredInvoices(query, currentPage, true);
@@ -23,6 +24,7 @@ export default async function InvoicesTable({ query, currentPage }) {
                                     </div>
                                     <InvoiceStatus status={invoice.status} />
                                 </div>
+
                                 <div className="flex w-full items-center justify-between pt-4">
                                     <div>
                                         <p className="text-xl font-medium">
@@ -58,6 +60,7 @@ export default async function InvoicesTable({ query, currentPage }) {
                                     className="px-3 py-5 font-medium">
                                     Email
                                 </th>
+                                <SortProducts />
                                 <th
                                     scope="col"
                                     className="px-3 py-5 font-medium">

@@ -1,9 +1,9 @@
 import Form from '@/app/ui/edit-form';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/app/ui/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/lib';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react'
-import { NavigationEvents } from '@/components/navigation-events'
+import { NavigationEvents } from '@/app/ui/navigation-events'
 
 export const metadata = {
     title: 'Invoice edit',
@@ -28,10 +28,10 @@ export default async function Page({ params }) {
             <main>
                 <Breadcrumbs
                     breadcrumbs={[
-                        { label: 'Invoices', href: '/dashboard/invoices' },
+                        { label: 'Invoices', href: '/invoices' },
                         {
                             label: 'Edit Invoice',
-                            href: `/dashboard/invoices/${id}/edit`,
+                            href: `/invoices/${id}/edit`,
                             active: true,
                         },
                     ]}

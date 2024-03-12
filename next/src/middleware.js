@@ -1,3 +1,9 @@
+import { NextResponse } from 'next/server'
+
+export function middleware(request) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+}
+
 export const config = {
     // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
     //matcher option specify that it should run on specific paths.

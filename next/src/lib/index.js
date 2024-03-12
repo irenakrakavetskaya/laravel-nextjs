@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation'
 const ITEMS_PER_PAGE = 6
 const token = process.env.NEXT_PUBLIC_TOKEN;
 
+/*
 export async function fetchRevenue() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/revenues'
     const res = await fetch(url, {
@@ -20,7 +21,6 @@ export async function fetchRevenue() {
     return await res.json();
 }
 
-/*
 export async function fetchLatestInvoices() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices?limit=5';
     const res = await fetch(url, {

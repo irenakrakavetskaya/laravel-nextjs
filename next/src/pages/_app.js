@@ -1,4 +1,4 @@
-import AppLayout from '@/app/(app)/layout'
+import AppLayout from '@/app/[lang]/(app)/layout'
 
 export default function MyApp({ Component, pageProps }) {
     return (

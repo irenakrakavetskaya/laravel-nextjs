@@ -22,7 +22,7 @@ export async function getServerSideProps() {
 
 export default function Index({ data }) {
     const [errors, setErrors] = useState([])
-    const [status, setStatus] = useState(null)
+    const [, setStatus] = useState(null)
     const router = useRouter()
     useEffect(() => {
         if (router.query.status?.length > 0 && errors.length === 0) {
@@ -59,7 +59,7 @@ export default function Index({ data }) {
                 <title>Posts</title>
             </Head>
             <div className="m-6">
-                <Link href="blog/create" className="py-2 px-4 m-4 bg-gray-50 text-gray-600 font-bold border border-gray-400 hover:bg-white hover:drop-shadow-md rounded-md">Create Post</Link>
+                <Link href="/blog/create" className="py-2 px-4 m-4 bg-gray-50 text-gray-600 font-bold border border-gray-400 hover:bg-white hover:drop-shadow-md rounded-md">Create Post</Link>
             </div>
             <div className="bg-white rounded-md overflow-x-auto m-6 drop-shadow-lg">
                 <table className="w-full whitespace-nowrap">

@@ -1,14 +1,12 @@
 'use server'
 
 import process from 'next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss'
-import { formatCurrency } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
 
 const ITEMS_PER_PAGE = 6
 const token = process.env.NEXT_PUBLIC_TOKEN;
-
 /*
 export async function fetchRevenue() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/revenues'
@@ -106,6 +104,7 @@ export async function fetchFilteredInvoices(query, currentPage, limit) {
         headers: {
             Authorization: `Bearer ${token}`,
         },
+        next: { revalidate: 0 }, // otherwise delete wouldn't show changes immediately
     });
     let data = await res.json()
     let invoices = data['invoices'];
@@ -127,7 +126,7 @@ const FormSchema = z.object({
     }),
 })
 
-export async function updateInvoice(id, page, prevState, formData) {
+export async function updateInvoice(id, page, pathname, prevState, formData) {
     //Extracting the data from formData and  Validating the types with Zod.
     const validatedFields = FormSchema.safeParse({
         customerId: formData.get('customerId'),
@@ -180,7 +179,7 @@ export async function updateInvoice(id, page, prevState, formData) {
                 }
             }
         }
-        let data = await response.json()
+        //let data = await response.json()
     } catch (error) {
         return {
             errors: {
@@ -192,8 +191,10 @@ export async function updateInvoice(id, page, prevState, formData) {
     //clear the client cache and make a new server request.
     revalidatePath('/invoices')
 
+    const pathnameParts = pathname.split('/');
+    let locale = pathnameParts[1]?.toLowerCase();
     //redirect the user to the invoice's page.
-    redirect(`/invoices?page=${page}`)
+    redirect(`/${locale}/invoices/?page=${page}`)
 }
 
 export async function fetchInvoiceById(id) {
@@ -203,6 +204,7 @@ export async function fetchInvoiceById(id) {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
+            cache: 'no-store',
         });
         let data = await res.json()
         data.amount = data.amount / 100
@@ -228,7 +230,7 @@ export async function fetchCustomers() {
 }
 
 //prevState - contains the state passed from the useFormState hook, it's a required prop.
-export async function createInvoice(prevState, formData) {
+export async function createInvoice(pathname, prevState, formData) {
     //safeParse() will return an object containing either a success or error field.
     const validatedFields = FormSchema.safeParse({
         customerId: formData.get('customerId'),
@@ -272,7 +274,7 @@ export async function createInvoice(prevState, formData) {
                 },
             }
         }
-        let data = await response.json()
+        //let data = await response.json()
     } catch (error) {
         return {
             errors: {
@@ -284,5 +286,7 @@ export async function createInvoice(prevState, formData) {
     // clear cache and trigger a new request to the server.
     revalidatePath('/invoices');
 
-    redirect('/invoices');
+    const pathnameParts = pathname.split('/');
+    let locale = pathnameParts[1]?.toLowerCase();
+    redirect(`/${locale}/invoices`);
 }

@@ -8,7 +8,7 @@ import {
     UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/[lang]/ui/button';
-import { createInvoice } from '@/lib';
+import { createInvoice } from '@/lib/actions';
 //Takes two arguments: (action, initialState).
 // Returns two values: [state, dispatch] - the form state, and a dispatch function (similar to useReducer)
 import { useFormState } from 'react-dom';
@@ -80,6 +80,7 @@ export default function Form({ customers }) {
                                 name="amount"
                                 type="number"
                                 step="0.01"
+                                required
                                 placeholder="Enter USD amount"
                                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                                 aria-describedby="amount-error"
@@ -171,7 +172,9 @@ export default function Form({ customers }) {
                 >
                     Cancel
                 </Link>
-                <Button type="submit">Create Invoice</Button>
+                <Button type="submit" aria-disabled={state}>
+                    Create Invoice
+                </Button>
             </div>
         </form>
     );

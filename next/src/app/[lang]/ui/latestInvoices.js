@@ -6,6 +6,9 @@ import { lusitana } from '@/app/[lang]/ui/fonts'
 import useSWR from 'swr'
 import { formatCurrency } from '@/lib/utils'
 
+// https://swr.vercel.app/ - React Hooks for Data Fetching
+// “SWR” - stale-while-revalidate, first return the data from cache (stale), then send the fetch request (revalidate),
+// and finally come with the up-to-date data.
 export default function LatestInvoices() {
     // added example with useSWR
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/invoices?limit=5';

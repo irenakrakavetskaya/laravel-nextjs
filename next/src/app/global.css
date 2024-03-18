@@ -34,6 +34,15 @@ html {
     margin: 0;
 }
 
+body {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
 .modal-backdrop {
     position: absolute;
     top: 0;
@@ -121,4 +130,74 @@ html {
     .card {
         width: 80%;
     }
+}
+
+.todo button {
+    background-color: black;
+    border-radius: 4px;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    outline-offset: 4px;
+}
+
+.todo button:hover {
+    opacity: 0.8;
+}
+
+.todo button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.todo label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.todo input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    outline-offset: 4px;
+}
+
+form.todo {
+    padding :20px;
+}
+
+ul.todoUl {
+    padding: 0;
+    margin: auto;
+}
+
+.todoUl li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\TodoController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,4 +33,5 @@ Route::middleware(['auth:sanctum'])
         Route::resource('customers', CustomerController::class);
         Route::resource('invoices', InvoiceController::class);
         Route::resource('revenues', RevenueController::class);
+        Route::resource('todos', TodoController::class);
 });

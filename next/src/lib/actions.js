@@ -3,12 +3,13 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
+import {data} from "autoprefixer";
 
 const token = process.env.NEXT_PUBLIC_TOKEN;
 
 export async function deleteInvoice(id) {
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`
     try {
-        let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`
         const res = await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -166,4 +167,55 @@ export async function createInvoice(pathname, prevState, formData) {
     // clear cache and trigger a new request to the server.
     revalidatePath(`/${locale}/invoices`)
     redirect(`/${locale}/invoices`)
+}
+
+export async function createTodo(prevState, formData) {
+    const schema = z.object({
+        todo: z.string().min(1),
+    })
+    const validatedField = schema.safeParse({
+        todo: formData.get('todo'),
+    })
+
+    if (!validatedField.success) {
+        return { message: 'Failed to create todo' }
+    }
+
+    const { todo } = validatedField.data
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/todos/`;
+    try {
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                todo: todo,
+            }),
+        })
+        revalidateTag('todos')
+
+        return { message: `Added todo ${data.todo}` };
+    } catch (e) {
+        return { message: 'Failed to create todo' }
+    }
+}
+
+export async function deleteTodo(prevState, formData) {
+    let id = formData.get('id')
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/todos/${id}`
+    try {
+        await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        revalidateTag('todos')
+
+        return { message: `Deleted todo` }
+    } catch (e) {
+        return { message: 'Failed to delete todo' }
+    }
 }

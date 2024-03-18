@@ -123,3 +123,18 @@ export async function fetchCustomers() {
         throw new Error('Failed to fetch all customers.')
     }
 }
+
+export async function fetchTodos() {
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/todos'
+    try {
+        const res = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            next: { tags: ['todos'] }, // on-demand revalidation
+        })
+        return await res.json()
+    } catch (err) {
+        throw new Error('Failed to fetch todos.')
+    }
+}

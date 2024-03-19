@@ -5,7 +5,7 @@ import { CreateInvoice } from '@/app/[lang]/ui/buttons';
 import Header from '@/app/[lang]/ui/Header'
 import { InvoicesTableSkeleton } from '@/app/[lang]/ui/skeletons'
 import { Suspense } from 'react';
-import { fetchFilteredInvoices } from '@/lib'
+import { fetchFilteredInvoices } from '@/app/lib'
 
 export const metadata = {
     title: 'Invoices',

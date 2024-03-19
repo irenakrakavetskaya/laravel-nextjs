@@ -4,7 +4,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import { lusitana } from '@/app/[lang]/ui/fonts'
 import useSWR from 'swr'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency } from '@/app/lib/utils'
 
 // https://swr.vercel.app/ - React Hooks for Data Fetching
 // “SWR” - stale-while-revalidate, first return the data from cache (stale), then send the fetch request (revalidate),

@@ -4,7 +4,7 @@ import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Label from '@/components/Label'
 import { useState } from 'react'
-import { axios } from '@/lib/axios'
+import { axios } from '@/pages/lib/axios'
 import { useRouter } from 'next/router'
 
 export default function Edit() {

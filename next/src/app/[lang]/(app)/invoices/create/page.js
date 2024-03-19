@@ -1,6 +1,6 @@
 import Form from '@/app/[lang]/ui/create-form';
 import Breadcrumbs from '@/app/[lang]/ui/breadcrumbs';
-import { fetchCustomers } from '@/lib';
+import { fetchCustomers } from '@/app/lib';
 
 export const metadata = {
     title: 'Invoice create',

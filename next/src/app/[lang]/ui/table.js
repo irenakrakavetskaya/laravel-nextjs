@@ -1,7 +1,7 @@
 import { UpdateInvoice, DeleteInvoice } from '@/app/[lang]/ui/buttons'
 import InvoiceStatus from '@/app/[lang]/ui/status'
-import { formatDateToLocal, formatCurrency } from '@/lib/utils'
-import { fetchFilteredInvoices } from '@/lib'
+import { formatDateToLocal, formatCurrency } from '@/app/lib/utils'
+import { fetchFilteredInvoices } from '@/app/lib'
 import SortProducts from '@/app/[lang]/ui/sorting';
 
 export default async function InvoicesTable({ query, currentPage }) {

@@ -8,7 +8,7 @@ import {
     UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/[lang]/ui/button';
-import { createInvoice } from '@/lib/actions';
+import { createInvoice } from '@/app/lib/actions';
 //Takes two arguments: (action, initialState).
 // Returns two values: [state, dispatch] - the form state, and a dispatch function (similar to useReducer)
 import { useFormState } from 'react-dom';

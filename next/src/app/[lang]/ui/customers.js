@@ -1,5 +1,5 @@
-import { fetchCustomers } from '@/lib'
-import { formatDateToLocal } from '@/lib/utils'
+import { fetchCustomers } from '@/app/lib'
+import { formatDateToLocal } from '@/app/lib/utils'
 
 export default async function CustomersTable() {
     const customers = await fetchCustomers()

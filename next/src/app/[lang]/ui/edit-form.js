@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { Button } from '@/app/[lang]/ui/button'
-import { updateInvoice } from '@/lib/actions'
+import { updateInvoice } from '@/app/lib/actions'
 import { useFormState } from 'react-dom'
 import { useSearchParams, usePathname } from 'next/navigation'
 

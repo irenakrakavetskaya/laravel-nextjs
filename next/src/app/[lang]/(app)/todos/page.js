@@ -1,7 +1,7 @@
 import { AddForm } from '@/app/[lang]/ui/add-form'
 import { DeleteForm } from '@/app/[lang]/ui/delete-form'
 import Header from '@/app/[lang]/ui/Header'
-import { fetchTodos } from '@/lib'
+import { fetchTodos } from '@/app/lib'
 
 export const metadata = {
     title: 'TODO',

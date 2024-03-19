@@ -1,5 +1,10 @@
 const ITEMS_PER_PAGE = 6
-const token = process.env.NEXT_PUBLIC_TOKEN;
+
+// Since the environment variable API_KEY is not prefixed with NEXT_PUBLIC, it's a private variable
+// that can only be accessed on the server. To prevent your environment variables from being leaked to the client
+// The file should be in the app directoru
+const token = process.env.API_TOKEN;
+
 /*
 export async function fetchRevenue() {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + '/api/revenues'

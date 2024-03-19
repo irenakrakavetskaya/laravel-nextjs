@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { redirect } from 'next/navigation'
 import {data} from "autoprefixer";
 
-const token = process.env.NEXT_PUBLIC_TOKEN;
+const token = process.env.API_TOKEN;
 
 export async function deleteInvoice(id) {
     let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/invoices/${id}`

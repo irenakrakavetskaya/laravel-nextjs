@@ -1,6 +1,6 @@
 import Form from '@/app/[lang]/ui/edit-form';
 import Breadcrumbs from '@/app/[lang]/ui/breadcrumbs';
-import { fetchInvoiceById, fetchCustomers } from '@/lib';
+import { fetchInvoiceById, fetchCustomers } from '@/app/lib';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react'
 import { NavigationEvents } from '@/app/[lang]/ui/navigation-events'

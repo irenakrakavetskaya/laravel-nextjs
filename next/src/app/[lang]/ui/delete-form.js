@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { deleteTodo } from '@/lib/actions'
+import { deleteTodo } from '@/app/lib/actions'
 
 const initialState = {
     message: '',

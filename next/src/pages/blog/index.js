@@ -3,7 +3,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Button from '@/pages/ui/Button'
-import { axios, token } from '@/lib/axios'
+import { axios, token } from '@/pages/lib/axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import '@/app/global.css'

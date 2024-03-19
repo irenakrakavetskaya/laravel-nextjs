@@ -4,6 +4,7 @@ import { useAuth } from '@/app/hooks/auth'
 import Navigation from '../../../components/Navigation'
 import Loading from '@/app/[lang]/(app)/Loading'
 //import Template from '@/app/en-US/(app)/template'
+import ThemeProvider from '@/app/[lang]/ui/theme-provider'
 
 const AppLayout = ({ modal, children }) => {
     const { user } = useAuth({ middleware: 'auth' })
@@ -17,7 +18,14 @@ const AppLayout = ({ modal, children }) => {
         <div className="min-h-screen bg-gray-100">
             <div>{modal}</div>
             <Navigation user={user} />
-            <main>{children}</main>
+            <main>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem>
+                    {children}
+                </ThemeProvider>
+            </main>
             <div id="modal-root" />
             {/*
             template.js is rendered between a layout and its children.

@@ -43,8 +43,8 @@ export default async function CardWrapper() {
             />
             {/*When the user clicks the <Link>, the modal will open instead of navigating to the /customers page.
             However, on refresh or initial load, navigating to /customers will take the user to the customers page.*/}
-            <div className="rounded-xl bg-gray-50 p-2 shadow-smcard">
-                <Link href="/customers">Open modal with customers</Link>
+            <div className="rounded-xl bg-gray-50 p-2 shadow-smcard ">
+                <Link href="/customers" className="text-slate-900 dark:text-slate-300">Open modal with customers</Link>
             </div>
         </>
     )
@@ -57,11 +57,11 @@ export function Card({ title, value, type }) {
         <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
             <div className="flex p-4">
                 {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
-                <h3 className="ml-2 text-sm font-medium">{title}</h3>
+                <h3 className="ml-2 text-sm font-medium text-slate-900 dark:text-slate-300">{title}</h3>
             </div>
             <p
                 className={`${lusitana.className}
-          truncate rounded-xl bg-white px-4 py-8 text-center text-2xl`}>
+          truncate rounded-xl bg-white px-4 py-8 text-center text-2xl text-slate-900 dark:text-slate-300`}>
                 {value}
             </p>
         </div>

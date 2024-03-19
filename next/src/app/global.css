@@ -132,7 +132,7 @@ body {
     }
 }
 
-.todo button {
+.todo button, .counter button {
     background-color: black;
     border-radius: 4px;
     color: white;
@@ -144,7 +144,7 @@ body {
     outline-offset: 4px;
 }
 
-.todo button:hover {
+.todo button:hover, .counter button:hover {
     opacity: 0.8;
 }
 
@@ -200,4 +200,8 @@ ul.todoUl {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+.bg-white{
+    --tw-bg-opacity: 1;
+    background-color: inherit;
 }

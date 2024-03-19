@@ -9,6 +9,7 @@ import {
     CardsSkeleton,
 } from '@/app/[lang]/ui/skeletons'
 import { getDictionary } from '@/app/dictionaries'
+import Counter from '@/app/[lang]/ui/counter'
 
 export const metadata = {
     title: 'Laravel - Dashboard',
@@ -20,6 +21,7 @@ export default async function Dashboard({ params: { lang } }) {
     return (
         <>
             <Header title={dict.dashboard.title} />
+
             <div className="grid gap-6 sm:grid-cols-3 lg:grid-cols-5">
                 <Suspense fallback={<CardsSkeleton />}>
                     <CardWrapper />
@@ -32,6 +34,9 @@ export default async function Dashboard({ params: { lang } }) {
                 <Suspense fallback={<LatestInvoicesSkeleton />}>
                     <LatestInvoices />
                 </Suspense>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-6 lg:grid-cols-8 counter">
+                <Counter />
             </div>
         </>
     )

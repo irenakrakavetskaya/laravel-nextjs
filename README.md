@@ -12,6 +12,8 @@ config DB and add DB settings in .env
 
 php artisan migrate
 
+php artisan storage:link
+
 php artisan serve
 
 Ensure that your application's APP_URL and FRONTEND_URL environment variables are set to http://localhost:8000 and http://localhost:3000, respectively.

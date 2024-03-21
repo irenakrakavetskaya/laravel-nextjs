@@ -205,3 +205,26 @@ ul.todoUl {
     --tw-bg-opacity: 1;
     background-color: inherit;
 }
+
+/* the following code is required for image preview */
+.container-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.container-preview .preview {
+    display: flex;
+    flex-direction: column;
+}
+.container-preview img {
+    max-width: 100%
+}
+.container-preview .delete {
+    cursor: pointer;
+    padding: 5px;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 12px;
+}

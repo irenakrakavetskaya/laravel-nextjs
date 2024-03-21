@@ -2,10 +2,10 @@ import { UpdateInvoice, DeleteInvoice } from '@/app/[lang]/ui/buttons'
 import InvoiceStatus from '@/app/[lang]/ui/status'
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils'
 import { fetchFilteredInvoices } from '@/app/lib'
-import SortProducts from '@/app/[lang]/ui/sorting';
+import Image from 'next/image'
 
 export default async function InvoicesTable({ query, currentPage }) {
-    const [invoices] = await fetchFilteredInvoices(query, currentPage, true);
+    const [invoices] = await fetchFilteredInvoices(query, currentPage, true)
 
     return (
         <div className="mt-6 flow-root">
@@ -57,10 +57,14 @@ export default async function InvoicesTable({ query, currentPage }) {
                                 </th>
                                 <th
                                     scope="col"
+                                    className="px-4 py-5 font-medium sm:pl-6">
+                                    Photo
+                                </th>
+                                <th
+                                    scope="col"
                                     className="px-3 py-5 font-medium">
                                     Email
                                 </th>
-                                <SortProducts />
                                 <th
                                     scope="col"
                                     className="px-3 py-5 font-medium">
@@ -92,6 +96,22 @@ export default async function InvoicesTable({ query, currentPage }) {
                                         <div className="flex items-center gap-3">
                                             <p>{invoice.customer?.name}</p>
                                         </div>
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-3">
+                                        {invoice.customer &&
+                                        invoice.customer.avatar ? (
+                                            <Image
+                                                src={
+                                                    process.env
+                                                        .NEXT_PUBLIC_BACKEND_URL +
+                                                    invoice.customer.avatar
+                                                }
+                                                className="rounded-full"
+                                                width={28}
+                                                height={28}
+                                                alt={`${invoice.customer?.name}'s profile picture`}
+                                            />
+                                        ) : null}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         {invoice.customer?.email}

@@ -121,8 +121,8 @@ export async function fetchCustomers() {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-            next: { revalidate: 30 },
-        });
+            next: { tags: ['customers'] },
+        })
         return await res.json()
     } catch (err) {
         throw new Error('Failed to fetch all customers.')
@@ -141,5 +141,21 @@ export async function fetchTodos() {
         return await res.json()
     } catch (err) {
         throw new Error('Failed to fetch todos.')
+    }
+}
+
+export async function fetchCustomerById(id) {
+    let url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/customers/${id}`
+    try {
+        const res = await fetch(url, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            cache: 'no-store',
+        });
+
+        return await res.json()
+    } catch (error) {
+        throw new Error('Failed to fetch customer.')
     }
 }

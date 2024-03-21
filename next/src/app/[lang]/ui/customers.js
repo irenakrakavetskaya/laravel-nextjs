@@ -1,5 +1,7 @@
 import { fetchCustomers } from '@/app/lib'
 import { formatDateToLocal } from '@/app/lib/utils'
+import { DeleteCustomer, UpdateCustomer } from '@/app/[lang]/ui/buttons'
+import Image from 'next/image'
 
 export default async function CustomersTable() {
     const customers = await fetchCustomers()
@@ -41,6 +43,11 @@ export default async function CustomersTable() {
                                 <th
                                     scope="col"
                                     className="px-3 py-5 font-medium">
+                                    Photo
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="px-3 py-5 font-medium">
                                     Email
                                 </th>
 
@@ -60,10 +67,33 @@ export default async function CustomersTable() {
                                         {customer?.name}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
+                                        {customer?.avatar ? (
+                                            <Image
+                                                src={
+                                                    process.env
+                                                        .NEXT_PUBLIC_BACKEND_URL +
+                                                    '/' +
+                                                    customer?.avatar
+                                                }
+                                                className="rounded-full"
+                                                width={28}
+                                                height={28}
+                                                quality={75}
+                                                alt={`${customer?.name}'s profile picture`}
+                                            />
+                                        ) : null}
+                                    </td>
+                                    <td className="whitespace-nowrap px-3 py-3">
                                         {customer?.email}
                                     </td>
                                     <td className="whitespace-nowrap px-3 py-3">
                                         {formatDateToLocal(customer.created_at)}
+                                    </td>
+                                    <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                                        <div className="flex justify-end gap-3">
+                                            <UpdateCustomer id={customer.id} />
+                                            <DeleteCustomer id={customer.id} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

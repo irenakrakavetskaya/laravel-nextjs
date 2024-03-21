@@ -30,6 +30,7 @@ Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])
     ->group(function() {
+        Route::post('customers/{id}', [CustomerController::class, 'update']);
         Route::resource('customers', CustomerController::class);
         Route::resource('invoices', InvoiceController::class);
         Route::resource('revenues', RevenueController::class);

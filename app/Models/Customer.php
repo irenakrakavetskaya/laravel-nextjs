@@ -13,7 +13,7 @@ class Customer extends Model
     protected $table = 'customers';
 
     protected $fillable = [
-        'name', 'email'
+        'name', 'email', 'avatar'
     ];
 
     public function invoices(): HasMany

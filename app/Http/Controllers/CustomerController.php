@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -14,9 +15,9 @@ class CustomerController extends Controller
      */
     public function index(): JsonResponse
     {
-        $posts = Customer::all()->toArray();
+        $customers = Customer::latest('created_at')->get()->toArray();
 
-        return response()->json($posts);
+        return response()->json($customers);
     }
 
     /**
@@ -30,14 +31,36 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCustomerRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
+        // TODO refactor to avoid duplication in validation
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|string|unique:customers',
+            'name' => 'required|string',
+            'avatar' =>  'required|image'
         ]);
 
-        Customer::create($validated);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $fileName = date('YmdH') . $avatar->getClientOriginalName();
+
+            //Get the path to the folder where the image is stored and then save the path in database
+            $path = $request->avatar->storeAs('images', $fileName, 'public');
+        }
+
+        Customer::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'avatar' => $path ?? null,
+        ]);
 
         return response()->json(['status' => 'Customer created.']);
     }
@@ -47,7 +70,9 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        $record = Customer::find($customer->id)->toArray();
+
+        return response()->json($record);
     }
 
     /**
@@ -63,14 +88,36 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer): JsonResponse
+    public function update(Request $request, $id): JsonResponse
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'content' => 'required',
+        $customer = Customer::find($id);
+        if (!$customer) {
+            return Response::json(['message' => 'Customer not found'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|string',
+            'name' => 'required|string',
+            'avatar' =>  'image'
         ]);
 
-        $customer->update($validated);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $fileName = date('YmdH') . $avatar->getClientOriginalName();
+
+            //Get the path to the folder where the image is stored and then save the path in database
+            $path = $request->avatar->storeAs('images', $fileName, 'public');
+            $customer['avatar'] = $path;
+        }
+        $customer->update($request->except('avatar'));
 
         return response()->json(['status' => 'Customer updated.']);
     }

@@ -3,6 +3,7 @@
 import { PencilIcon, PlusIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { deleteInvoice } from '@/app/lib/actions'
+import { deleteCustomer } from '@/app/lib/actions'
 import Button from '@/pages/ui/Button'
 
 export function CreateInvoice() {
@@ -36,6 +37,30 @@ export function DeleteInvoice({ id }) {
             className="ml-4 bg-red-600 hover:bg-red-500"
             onClick={async () => {
                 await deleteInvoice(id)
+            }}>
+            Delete
+        </Button>
+    )
+}
+
+export function UpdateCustomer({ id }) {
+    let updateLink = `/customers/${id}/edit`
+
+    return (
+        <Link
+            href={updateLink}
+            className="rounded-md border p-2 hover:bg-gray-100">
+            <PencilIcon className="w-5" />
+        </Link>
+    )
+}
+
+export function DeleteCustomer({ id }) {
+    return (
+        <Button
+            className="ml-4 bg-red-600 hover:bg-red-500"
+            onClick={async () => {
+                await deleteCustomer(id)
             }}>
             Delete
         </Button>

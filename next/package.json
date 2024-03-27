@@ -1,5 +1,5 @@
 {
-  "name": "breeze-next",
+  "name": "laravel-next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "test": "vitest"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.4",
@@ -32,14 +33,18 @@
     "@babel/preset-react": "^7.18.6",
     "@next/eslint-plugin-next": "^10.0.4",
     "@tailwindcss/forms": "^0.5.2",
+    "@testing-library/react": "^14.2.2",
+    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.27.0",
     "eslint-config-next": "^14.0.3",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.6",
     "prettier": "2.2.1",
-    "tailwindcss": "^3.0.22"
+    "tailwindcss": "^3.0.22",
+    "vitest": "^1.4.0"
   }
 }

@@ -34,3 +34,6 @@ Register your user
 Check pages:
 http://localhost:3000/dashboard
 http://localhost:3000/blog
+
+Run frontEnd tests:
+npm run test

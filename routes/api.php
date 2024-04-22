@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\TodoController;
+use Illuminate\Support\Facades\Redirect;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,16 +24,31 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/auth/register', [AuthController::class, 'createUser']);
-Route::post('/auth/login', [AuthController::class, 'loginUser']);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/auth/register', 'createUser');
+    Route::post('/auth/login', 'loginUser');
+});
 
+//apiResource - exclude routes that present HTML templates such as create and edit.
 Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])
     ->group(function() {
+        // If you need to add additional routes to a resource controller beyond the default set of resource routes,
+        // you should define those routes before your call to the Route::resource method
+        // there is a supplemental routes for image updating
         Route::post('customers/{id}', [CustomerController::class, 'update']);
-        Route::resource('customers', CustomerController::class);
-        Route::resource('invoices', InvoiceController::class);
-        Route::resource('revenues', RevenueController::class);
-        Route::resource('todos', TodoController::class);
+        Route::apiResources([
+            'invoices' => InvoiceController::class,
+            'revenues' => RevenueController::class,
+            'todos' => TodoController::class,
+        ]);
+
+        //The missing method accepts a closure that will be invoked
+        //if an implicitly bound model can not be found for any of the resource's routes:
+        Route::apiResource('customers', CustomerController::class)
+            ->missing(function (Request $request) {
+                return Redirect::route('customers.index');
+        });
 });
+

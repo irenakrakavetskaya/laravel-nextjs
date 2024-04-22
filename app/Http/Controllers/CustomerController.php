@@ -21,14 +21,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
@@ -68,21 +60,9 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(Customer $customer): JsonResponse
     {
-        $record = Customer::find($customer->id)->toArray();
-
-        return response()->json($record);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Customer $customer): JsonResponse
-    {
-        $record = Customer::find($customer->id)->toArray();
-
-        return response()->json($record);
+        return response()->json($customer);
     }
 
     /**

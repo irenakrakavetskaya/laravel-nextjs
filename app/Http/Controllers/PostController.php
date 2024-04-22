@@ -19,14 +19,6 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
@@ -45,16 +37,6 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(Post $post): JsonResponse
-    {
-        $record = Post::find($post->id)->toArray();
-
-        return response()->json($record);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post) : JsonResponse
     {
         $record = Post::find($post->id)->toArray();
 

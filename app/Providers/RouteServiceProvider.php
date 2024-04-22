@@ -24,8 +24,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //If the incoming request exceeds the specified rate limit,
+        // a response with a 429 HTTP status code will be returned
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(30)
+                ->by($request->user()?->id ?: $request->ip())
+               ->response(function (Request $request) {
+                    return response('The number of incoming requests exceed the rate limit', 429);
+           });
         });
 
         $this->routes(function () {

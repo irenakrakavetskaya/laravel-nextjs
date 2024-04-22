@@ -14,6 +14,19 @@ const Navigation = ({ user }) => {
     const { logout } = useAuth()
 
     const [open, setOpen] = useState(false)
+    const locale = usePathname()?.split('/')[1]
+    const id = usePathname()?.split('/')[3]
+
+    const invoicesPaths = [
+        `/${locale}/invoices`,
+        `/${locale}/invoices/${id}/edit`,
+        `/${locale}/invoices/create`,
+    ]
+
+    const customersPaths = [
+        `/${locale}/customers`,
+        `/${locale}/customers/${id}/edit`,
+    ]
 
     return (
         <nav className="bg-white border-b border-gray-100">
@@ -32,27 +45,29 @@ const Navigation = ({ user }) => {
                         <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <NavLink
                                 href="/dashboard"
-                                active={usePathname() === '/dashboard'}>
+                                active={
+                                    usePathname() === `/${locale}/dashboard`
+                                }>
                                 Dashboard
                             </NavLink>
                             <NavLink
                                 href="/blog"
-                                active={usePathname() === '/blog'}>
+                                active={usePathname() === `/blog`}>
                                 Blog
                             </NavLink>
                             <NavLink
                                 href="/invoices"
-                                active={usePathname() === '/invoices'}>
+                                active={invoicesPaths.includes(usePathname())}>
                                 Invoices
                             </NavLink>
                             <NavLink
                                 href="/todos"
-                                active={usePathname() === '/todos'}>
+                                active={usePathname() === `/${locale}/todos`}>
                                 Todos
                             </NavLink>
                             <NavLink
                                 href="/customers"
-                                active={usePathname() === '/customers'}>
+                                active={customersPaths.includes(usePathname())}>
                                 Сustomers
                             </NavLink>
                         </div>

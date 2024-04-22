@@ -1,4 +1,4 @@
-import ThemeSwitch from '@/app/[lang]/ui/theme-switch'
+import ThemeSwitch from '../ui/theme-switch.js'
 //flex min-h-screen flex-col items-center
 const Header = ({ title }) => {
     return (

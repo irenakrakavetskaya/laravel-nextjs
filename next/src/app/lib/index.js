@@ -86,7 +86,7 @@ export async function fetchFilteredInvoices(query, currentPage, limit) {
         headers: {
             Authorization: `Bearer ${token}`,
         },
-        next: { tags: ['invoices'] }, // on-demand revalidation
+        next: { tags: ['invoices'], revalidate: 3600 }, // on-demand revalidation and Time-based Revalidation
     });
     let data = await res.json()
     let invoices = data['invoices'];
@@ -140,7 +140,7 @@ export async function fetchTodos() {
         })
         return await res.json()
     } catch (err) {
-        throw new Error('Failed to fetch todos.')
+        throw new Error(err)
     }
 }
 

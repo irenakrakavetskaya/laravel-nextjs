@@ -104,6 +104,7 @@ export default async function InvoicesTable({ query, currentPage }) {
                                                 src={
                                                     process.env
                                                         .NEXT_PUBLIC_BACKEND_URL +
+                                                    '/' +
                                                     invoice.customer.avatar
                                                 }
                                                 className="rounded-full"

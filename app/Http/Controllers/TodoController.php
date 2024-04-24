@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TodoController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): Response
     {
         $todos = Todo::all()->toArray();
 
-        return response()->json($todos);
+        return response($todos);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): Response
     {
         $validated = $request->validate([
             'todo' => 'required',
@@ -23,13 +23,13 @@ class TodoController extends Controller
 
         Todo::create($validated);
 
-        return response()->json(['status' => 'Todo created.']);
+        return response(['status' => 'Todo created.'], 201);
     }
 
-    public function destroy(Todo $todo): JsonResponse
+    public function destroy(Todo $todo): Response
     {
         $todo->delete();
 
-        return response()->json(['status' => 'Todo deleted.']);
+        return response(['status' => 'Todo deleted.']);
     }
 }

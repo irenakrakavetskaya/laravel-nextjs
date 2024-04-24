@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Revenue;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 class RevenueController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): Response
     {
         $revenues = Revenue::orderBy('month','asc')->get();
 
-        return response()->json($revenues);
+        return response($revenues);
     }
 }

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): Response
     {
         $limit = $request->get('limit');
         $offset = $request->get('offset');
@@ -45,7 +45,7 @@ class InvoiceController extends Controller
         $invoices = $invoices->get();
         $invoicesCount = $invoices->count();
 
-        return response()->json([
+        return response([
             'invoices' => $invoices,
             'count' => $invoicesCount,
         ]);
@@ -54,7 +54,7 @@ class InvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): Response
     {
         $validated = $request->validate([
             'amount' => 'required',
@@ -64,21 +64,23 @@ class InvoiceController extends Controller
 
         $invoice = Invoice::create($validated);
 
-        return response()->json(['status' => 'Invoice created.']);
+        return response(['status' => 'Invoice created.'], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice): JsonResponse
+    public function show(Invoice $invoice): Invoice
     {
-        return response()->json($invoice);
+        //You may return Eloquent ORM model, Laravel will automatically convert the model to JSON responses
+        return $invoice;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice): JsonResponse
+    // route parameters ($invoice) should be after your other dependencies (Request $request)
+    public function update(Request $request, Invoice $invoice): Response
     {
         $validated = $request->validate([
             'amount' => 'required',
@@ -88,16 +90,16 @@ class InvoiceController extends Controller
 
         $invoice->update($validated);
 
-        return response()->json(['status' => 'Invoice updated.']);
+        return response(['status' => 'Invoice updated.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice): JsonResponse
+    public function destroy(Invoice $invoice): Response
     {
         $invoice->delete();
 
-        return response()->json(['status' => 'Invoice deleted.']);
+        return response(['status' => 'Invoice deleted.']);
     }
 }

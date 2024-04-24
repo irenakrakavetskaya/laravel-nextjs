@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -13,17 +12,17 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(): Response
     {
         $customers = Customer::latest('created_at')->get()->toArray();
 
-        return response()->json($customers);
+        return response($customers);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): Response
     {
         // TODO refactor to avoid duplication in validation
         $validator = Validator::make($request->all(),[
@@ -32,15 +31,15 @@ class CustomerController extends Controller
             'avatar' =>  'required|image'
         ]);
 
-        if($validator->fails()){
-            return response()->json([
+        if ($validator->fails()){
+            return response([
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        if ($request->hasFile('avatar')) {
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
             $avatar = $request->avatar;
             $fileName = date('YmdH') . $avatar->getClientOriginalName();
 
@@ -54,35 +53,35 @@ class CustomerController extends Controller
             'avatar' => $path ?? null,
         ]);
 
-        return response()->json(['status' => 'Customer created.']);
+        return response(['status' => 'Customer created.'], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer): JsonResponse
+    public function show(Customer $customer): Response
     {
-        return response()->json($customer);
+        return response($customer);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, $id): Response
     {
         $customer = Customer::find($id);
         if (!$customer) {
-            return Response::json(['message' => 'Customer not found'], 404);
+            return response(['message' => 'Customer not found'], 404);
         }
 
         $validator = Validator::make($request->all(),[
-            'email' => 'required|string',
+            'email' => 'required|string|unique:customers',
             'name' => 'required|string',
             'avatar' =>  'image'
         ]);
 
         if($validator->fails()){
-            return response()->json([
+            return response([
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
@@ -99,16 +98,16 @@ class CustomerController extends Controller
         }
         $customer->update($request->except('avatar'));
 
-        return response()->json(['status' => 'Customer updated.']);
+        return response(['status' => 'Customer updated.']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer): JsonResponse
+    public function destroy(Customer $customer): Response
     {
         $customer->delete();
 
-        return response()->json(['status' => 'Customer deleted.']);
+        return response(['status' => 'Customer deleted.']);
     }
 }

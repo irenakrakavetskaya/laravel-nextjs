@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -17,9 +18,10 @@ class AuthController extends Controller
         try {
             $validateUser = Validator::make($request->all(),
                 [
-                    'name' => 'required',
+                    'name' => 'required|alpha_dash:ascii',// characters in the ASCII range (a-z and A-Z
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required'
+                    //at least 8 characters, one uppercase and one lowercase letter, one number, one symbol
+                    'password' =>  ['required', Password::min(8)->mixedCase()->numbers()->symbols()],
                 ]);
 
             if($validateUser->fails()){

@@ -10,6 +10,11 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    public const STATUS = [
+        'paid',
+        'pending'
+    ];
+
     protected $table = 'invoices';
 
     protected $fillable = [

@@ -6,6 +6,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -24,34 +25,18 @@ class CustomerController extends Controller
      */
     public function store(Request $request): Response
     {
-        // TODO refactor to avoid duplication in validation
-        $validator = Validator::make($request->all(),[
-            'email' => 'required|string|unique:customers',
-            'name' => 'required|string',
-            'avatar' =>  'required|image'
-        ]);
+        $validator = $this->validateInput($request, 'store');
 
-        if ($validator->fails()){
+        //stop validating all attributes once a single validation failure has occurred
+        if ($validator->stopOnFirstFailure()->fails()) {
             return response([
-                'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
-            $avatar = $request->avatar;
-            $fileName = date('YmdH') . $avatar->getClientOriginalName();
-
-            //Get the path to the folder where the image is stored and then save the path in database
-            $path = $request->avatar->storeAs('images', $fileName, 'public');
-        }
-
-        Customer::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'avatar' => $path ?? null,
-        ]);
+        $validated = $this->handleAvatar($request, $validator);
+        Customer::create($validated);
 
         return response(['status' => 'Customer created.'], 201);
     }
@@ -74,29 +59,18 @@ class CustomerController extends Controller
             return response(['message' => 'Customer not found'], 404);
         }
 
-        $validator = Validator::make($request->all(),[
-            'email' => 'required|string|unique:customers',
-            'name' => 'required|string',
-            'avatar' =>  'image'
-        ]);
+        $validator = $this->validateInput($request, 'update', $id);
 
-        if($validator->fails()){
+        //stop validating all attributes once a single validation failure has occurred
+        if ($validator->stopOnFirstFailure()->fails()) {
             return response([
-                'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
             ], 400);
         }
 
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->avatar;
-            $fileName = date('YmdH') . $avatar->getClientOriginalName();
-
-            //Get the path to the folder where the image is stored and then save the path in database
-            $path = $request->avatar->storeAs('images', $fileName, 'public');
-            $customer['avatar'] = $path;
-        }
-        $customer->update($request->except('avatar'));
+        $validated = $this->handleAvatar($request, $validator);
+        $customer->update($validated);
 
         return response(['status' => 'Customer updated.']);
     }
@@ -109,5 +83,50 @@ class CustomerController extends Controller
         $customer->delete();
 
         return response(['status' => 'Customer deleted.']);
+    }
+
+    private function validateInput(Request $request, string $action, ?int $id = null): \Illuminate\Validation\Validator
+    {
+        // create a validator instance manually using the Validator facade.
+        if ($action === 'store') {
+            $avatarRules = 'required|image|max:1024'; //The avatar field must not be greater than 1024 kilobytes
+            $uniqueRule = 'unique:customers';
+        } else {
+            $avatarRules = 'image|max:1024';
+            $uniqueRule = Rule::unique('customers')->ignore($id);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'email' => ['required','email', $uniqueRule],
+            'name' => 'required|string',
+            'avatar' =>  $avatarRules
+        ], [
+            'email.required' => 'Email address is required',
+        ]);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->hasFile('avatar') && !$request->file('avatar')->isValid()) {
+                $validator->errors()->add(
+                    'avatar', 'Avatar image is invalid!'
+                );
+            }
+        });
+
+        return $validator;
+    }
+
+    private function handleAvatar(Request $request, \Illuminate\Validation\Validator $validator): array
+    {
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $fileName = date('YmdH') . $avatar->getClientOriginalName();
+            //Get the path to the folder where the image is stored and then save the path in database
+            $path = $request->avatar->storeAs('images', $fileName, 'public');
+            $validated = $validator->safe()->merge(['avatar' => $path ?? null])->toArray();
+        } else {
+            $validated = $validator->safe()->toArray();
+        }
+
+        return $validated;
     }
 }

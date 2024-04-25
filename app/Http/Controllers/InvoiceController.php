@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreInvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -54,13 +55,9 @@ class InvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): Response
+    public function store(StoreInvoiceRequest $request): Response
     {
-        $validated = $request->validate([
-            'amount' => 'required',
-            'status' => 'required',
-            'customer_id' => 'required',
-        ]);
+        $validated = $request->validated();
 
         $invoice = Invoice::create($validated);
 
@@ -84,8 +81,8 @@ class InvoiceController extends Controller
     {
         $validated = $request->validate([
             'amount' => 'required',
-            'status' => 'required',
-            'customer_id' => 'required',
+            'status' => 'required|string',
+            'customer_id' => 'required|integer',
         ]);
 
         $invoice->update($validated);

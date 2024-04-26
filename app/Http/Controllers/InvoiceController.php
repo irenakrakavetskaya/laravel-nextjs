@@ -6,6 +6,8 @@ use App\Http\Requests\StoreInvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
 {
@@ -69,6 +71,10 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice): Invoice
     {
+        Log::info('Showing the invoice for : {id}', ['id' => $invoice->id]);
+        //in logs
+        //[2024-04-26 12:30:50] local.INFO: Showing the invoice for : 1 {"id":1}
+
         //You may return Eloquent ORM model, Laravel will automatically convert the model to JSON responses
         return $invoice;
     }
